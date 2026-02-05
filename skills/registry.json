@@ -30,6 +30,13 @@
       "files": ["SKILL.md", "references/analysis-rules.md", "references/improvement-patterns.md", "references/quality-metrics.md", "scripts/analyze-features.ts", "scripts/check-step-coverage.ts", "scripts/detect-flaky-patterns.ts"]
     },
     {
+      "name": "playwright-cucumber-e2e-steps-generator",
+      "stack": "testing",
+      "description": "Generate Playwright E2E test step definitions from Cucumber feature files. Use when user provides a .feature file and wants to implement step definitions, create Page Object classes, or generate test ",
+      "path": "testing/playwright-cucumber-e2e-steps-generator/SKILL.md",
+      "files": ["SKILL.md", "references/common-steps.md", "references/page-object-template.md", "references/step-definition-template.md"]
+    },
+    {
       "name": "pom-generator",
       "stack": "testing",
       "description": "Interactive Page Object Model generator using Playwright MCP - navigates to web pages, analyzes HTML structure, and generates TypeScript POM classes with BasePage pattern.",
