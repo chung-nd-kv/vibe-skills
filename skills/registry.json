@@ -2,6 +2,20 @@
   "version": "1.0",
   "skills": [
     {
+      "name": "dotnet-ddd",
+      "stack": "backend",
+      "description": "\".NET Core DDD and Hexagonal/Clean Architecture skill for C# development. Use this skill whenever building domain models, aggregates, entities, value objects, domain events, repositories, use cases, ",
+      "path": "backend/dotnet-ddd/SKILL.md",
+      "files": ["SKILL.md", "references/core-interfaces.md", "references/strategic-ddd.md"]
+    },
+    {
+      "name": "dotnet-tdd",
+      "stack": "backend",
+      "description": "\".NET Core TDD workflow skill using xUnit and Moq. Use this skill whenever writing new code, implementing features, fixing bugs, or refactoring in .NET Core C# projects. Trigger on any mention of TDD",
+      "path": "backend/dotnet-tdd/SKILL.md",
+      "files": []
+    },
+    {
       "name": "bdd-practices",
       "stack": "common",
       "description": "Cucumber/Gherkin BDD best practices guidance skill, providing Gherkin writing standards, scenario design principles, Discovery Workshop facilitation, and common anti-pattern identification to help tea",
