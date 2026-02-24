@@ -18,21 +18,21 @@
     {
       "name": "bdd-practices",
       "stack": "common",
-      "description": "Cucumber/Gherkin BDD best practices guidance skill, providing Gherkin writing standards, scenario design principles, Discovery Workshop facilitation, and common anti-pattern identification to help tea",
+      "description": "Cucumber/Gherkin BDD best practices guidance and Gherkin review. Use when user writes Gherkin scenarios, asks to review .feature files, needs help with Discovery Workshops, Example Mapping, or asks ab",
       "path": "common/bdd-practices/SKILL.md",
-      "files": []
+      "files": ["SKILL.md", "references/anti-patterns.md", "references/discovery-workshop.md", "references/gherkin-golden-rules.md", "references/scenario-outline-checklist.md"]
     },
     {
       "name": "code-reviewer",
       "stack": "common",
-      "description": "Systematic code review for quality, correctness, and maintainability. Use when reviewing pull requests, code changes, diffs, or when asked to review/critique code. Covers functionality, architecture, ",
+      "description": "Systematic code review for quality, correctness, and maintainability. Use when reviewing pull requests, code changes, diffs, or when asked to review/critique code. Also use when user says review this,",
       "path": "common/code-reviewer/SKILL.md",
-      "files": ["SKILL.md", "references/common_checklists.md", "references/flutter_dart_checklist.md"]
+      "files": ["SKILL.md", "references/checklists.md", "references/dotnet-patterns.md", "references/flutter-dart-patterns.md"]
     },
     {
       "name": "sqlserver-expert",
       "stack": "database",
-      "description": "Expert in Microsoft SQL Server development and administration. Use when writing T-SQL queries, stored procedures, optimizing database performance (deadlocks, slow queries, execution plans), designing ",
+      "description": "Expert in Microsoft SQL Server development and administration. Use when writing T-SQL queries, stored procedures, functions, triggers, optimizing database performance (deadlocks, slow queries, executi",
       "path": "database/sqlserver-expert/SKILL.md",
       "files": ["SKILL.md", "references/cdc.md", "references/dotnet-integration.md", "references/performance.md", "references/system-queries.md", "references/tsql-advanced.md"]
     },
