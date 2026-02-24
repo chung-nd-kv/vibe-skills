@@ -1,6 +1,6 @@
 ---
 name: sqlserver-expert
-description: Expert in Microsoft SQL Server development and administration. Use when writing T-SQL queries, stored procedures, optimizing database performance (deadlocks, slow queries, execution plans), designing schemas, configuring SQL Server, implementing CDC (Change Data Capture), or integrating SQL Server with .NET Core/C# using Entity Framework Core or Dapper.
+description: Expert in Microsoft SQL Server development and administration. Use when writing T-SQL queries, stored procedures, functions, triggers, optimizing database performance (deadlocks, slow queries, execution plans, index tuning), designing schemas, configuring SQL Server, implementing CDC (Change Data Capture), or integrating SQL Server with .NET Core/C# using Entity Framework Core or Dapper. Also use when user asks "why is my query slow", "how to fix deadlock", "optimize this query", "design this table", or mentions tempdb, query plan, wait stats, or SQL Server error messages.
 ---
 
 # SQL Server Expert
