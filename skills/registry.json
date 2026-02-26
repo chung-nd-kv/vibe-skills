@@ -4,16 +4,16 @@
     {
       "name": "dotnet-ddd",
       "stack": "backend",
-      "description": "\".NET Core DDD and Hexagonal/Clean Architecture skill for C# development. Use this skill whenever building domain models, aggregates, entities, value objects, domain events, repositories, use cases, ",
+      "description": "Guides .NET Core application development using Domain-Driven Design with Hexagonal/Clean Architecture. Use when user asks to design aggregates, entities, value objects, domain events, repositories, bo",
       "path": "backend/dotnet-ddd/SKILL.md",
-      "files": ["SKILL.md", "references/core-interfaces.md", "references/strategic-ddd.md"]
+      "files": ["SKILL.md", "references/core-interfaces.md", "references/domain-patterns.md", "references/strategic-ddd.md"]
     },
     {
       "name": "dotnet-tdd",
       "stack": "backend",
-      "description": "\".NET Core TDD workflow skill using xUnit and Moq. Use this skill whenever writing new code, implementing features, fixing bugs, or refactoring in .NET Core C# projects. Trigger on any mention of TDD",
+      "description": ".NET Core TDD workflow using xUnit, Moq, and FluentAssertions. Guides the Plan-Test-Implement-Review cycle for C# code. Use when user says \"write tests first\", \"TDD\", \"Red-Green-Refactor\", \"uni",
       "path": "backend/dotnet-tdd/SKILL.md",
-      "files": []
+      "files": ["SKILL.md", "references/fluentassertions-cheatsheet.md", "references/moq-cheatsheet.md", "references/test-data-builders.md", "references/test-examples.md"]
     },
     {
       "name": "bdd-practices",
