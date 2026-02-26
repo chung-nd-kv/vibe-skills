@@ -1,12 +1,30 @@
 ---
 name: dotnet-ddd
-description: ".NET Core DDD and Hexagonal/Clean Architecture skill for C# development. Use this skill whenever building domain models, aggregates, entities, value objects, domain events, repositories, use cases, queries, or designing bounded contexts in .NET Core projects. Trigger on any mention of DDD patterns, Clean Architecture, Hexagonal Architecture, Ports and Adapters, CQRS separation, domain modeling, use case handlers, query handlers, outbox pattern, or bounded context design. Also trigger when creating new modules, designing domain layers, or structuring .NET solutions following modular architecture. Even if the user does not say DDD explicitly, use this skill when they are working on domain entities, business logic separation, or application service layers."
+description: Guides .NET Core application development using Domain-Driven Design with Hexagonal/Clean Architecture. Use when user asks to design aggregates, entities, value objects, domain events, repositories, bounded contexts, or module structure in .NET Core. Also use for CQRS implementation with UseCase/Query handler patterns, outbox pattern setup, or structuring .NET solutions with modular DDD architecture. Do NOT use for simple CRUD applications, basic EF Core queries, raw SQL/Dapper optimization (use sqlserver-expert), or general C# coding questions unrelated to domain modeling.
+metadata:
+  author: CuongTL
+  version: 1.0.0
+  category: architecture
 ---
 
 # .NET Core DDD + Hexagonal/Clean Architecture
 
 This skill guides building .NET Core applications following Domain-Driven Design with
 Hexagonal (Ports & Adapters) and Clean Architecture principles.
+
+## When NOT to Use This Skill
+
+- Simple CRUD operations without complex business rules
+- Basic EF Core or Dapper query optimization (use `sqlserver-expert`)
+- Generic C# coding tasks unrelated to domain architecture
+- Frontend or API design without domain modeling aspects
+
+## Skill Interactions
+
+- For SQL query optimization inside QueryHandlers, defer to `sqlserver-expert` skill
+- This skill defines the QueryHandler structure; `sqlserver-expert` optimizes the SQL within
+
+---
 
 ## Architecture Overview
 
@@ -190,114 +208,25 @@ var invoice = await _queryService.ExecuteAsync(new GetInvoiceByIdQuery(id));
 
 ## Domain Modeling
 
-### Aggregates & Entities
+For complete code patterns (Aggregates, Value Objects, Domain Events, Repository interfaces),
+see: `references/domain-patterns.md`
 
-Aggregates are the consistency boundary. Use factory methods for creation to enforce invariants
-and raise domain events.
+### Key Rules
 
-```csharp
-public class Invoice : BaseEntity, IHasDomainEvents
-{
-    private readonly List<IDomainEvent> _domainEvents = new();
-
-    // Properties — private setters enforce invariants
-    public Guid Id { get; private set; }
-    public string BuyerTaxCode { get; private set; } = string.Empty;
-    public string SellerTaxCode { get; private set; } = string.Empty;
-    public decimal Amount { get; private set; }
-    public InvoiceStatus Status { get; private set; }
-
-    // IHasDomainEvents
-    public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
-    public void AddDomainEvent(IDomainEvent domainEvent) => _domainEvents.Add(domainEvent);
-    public void RemoveDomainEvent(IDomainEvent domainEvent) => _domainEvents.Remove(domainEvent);
-    public void ClearDomainEvents() => _domainEvents.Clear();
-
-    // Factory method — the ONLY way to create
-    public static Invoice Create(string buyerTaxCode, string sellerTaxCode, decimal amount)
-    {
-        // Guard clauses / invariant validation
-        if (string.IsNullOrWhiteSpace(buyerTaxCode))
-            throw new DomainException("Buyer tax code is required");
-
-        var invoice = new Invoice
-        {
-            Id = Guid.NewGuid(),
-            BuyerTaxCode = buyerTaxCode,
-            SellerTaxCode = sellerTaxCode,
-            Amount = amount,
-            Status = InvoiceStatus.Draft
-        };
-
-        invoice.AddDomainEvent(new InvoiceCreatedEvent(invoice.Id));
-        return invoice;
-    }
-
-    // Behavior methods — express business rules
-    public void Submit()
-    {
-        if (Status != InvoiceStatus.Draft)
-            throw new DomainException("Only draft invoices can be submitted");
-
-        Status = InvoiceStatus.Submitted;
-        AddDomainEvent(new InvoiceSubmittedEvent(Id));
-    }
-}
-```
-
-**Key rules for Aggregates:**
+**Aggregates:**
 1. Use **factory methods** (`Create(...)`) — never expose public constructors for creation
 2. Use **private setters** — state changes only through behavior methods
 3. **Raise domain events** inside factory methods and behavior methods
 4. **Validate invariants** at creation and on every state transition
 5. Keep aggregates **small** — reference other aggregates by ID, not by navigation property
 
-### Value Objects
+**Value Objects:**
+- Immutable, compared by value — use C# `record` types
+- Self-validating in constructor
 
-Immutable objects with no identity, compared by value.
-
-```csharp
-public record Money(decimal Amount, string Currency)
-{
-    public static Money VND(decimal amount) => new(amount, "VND");
-
-    public Money Add(Money other)
-    {
-        if (Currency != other.Currency)
-            throw new DomainException("Cannot add different currencies");
-        return new Money(Amount + other.Amount, Currency);
-    }
-}
-
-public record TaxCode
-{
-    public string Value { get; }
-
-    public TaxCode(string value)
-    {
-        if (string.IsNullOrWhiteSpace(value) || value.Length > 14)
-            throw new DomainException("Invalid tax code");
-        Value = value;
-    }
-}
-```
-
-### Domain Events
-
-Events raised by aggregates, saved to Outbox table in the same transaction, then published
-via CDC (Debezium) → Kafka → Consumer workers.
-
-```csharp
-public interface IDomainEvent
-{
-    DateTime OccurredOn { get; }
-}
-
-public record InvoiceCreatedEvent(Guid InvoiceId) : IDomainEvent
-{
-    public DateTime OccurredOn { get; } = DateTime.UtcNow;
-}
-```
+**Domain Events:**
+- Events raised by aggregates, saved to Outbox table in the same transaction
+- Published via CDC (Debezium) → Kafka → Consumer workers
 
 **Outbox flow:**
 1. Aggregate raises domain event via `AddDomainEvent()`
@@ -306,21 +235,7 @@ public record InvoiceCreatedEvent(Guid InvoiceId) : IDomainEvent
 4. Debezium publishes to Kafka topic
 5. Consumer workers process the events
 
-### Repository Interfaces (Ports)
-
-Defined in the **Domain** layer. Implemented in **Infrastructure** (Adapters).
-
-```csharp
-// Domain/Interfaces/IInvoiceRepository.cs
-public interface IInvoiceRepository
-{
-    Task<Invoice?> GetByIdAsync(Guid id);
-    Task AddAsync(Invoice invoice);
-    Task UpdateAsync(Invoice invoice);
-}
-```
-
-**Rules:**
+**Repository Interfaces (Ports):**
 - Repository interfaces live in `Domain/Interfaces/`
 - Repository implementations live in `Infrastructure/Repositories/`
 - One repository per Aggregate Root
@@ -335,9 +250,9 @@ Use Result pattern as default, with exceptions for truly exceptional cases.
 ```csharp
 public class Result<T>
 {
-    public bool IsSuccess { get; }
-    public T? Value { get; }
-    public string? Error { get; }
+    public bool IsSuccess { get; init; }
+    public T? Value { get; init; }
+    public string? Error { get; init; }
 
     public static Result<T> Success(T value) => new() { IsSuccess = true, Value = value };
     public static Result<T> Failure(string error) => new() { IsSuccess = false, Error = error };
@@ -355,6 +270,22 @@ public class Result<T>
 
 For guidance on Bounded Context identification, Context Mapping patterns, and
 Ubiquitous Language practices, read: `references/strategic-ddd.md`
+
+---
+
+## Common Issues
+
+### User provides incomplete aggregate requirements
+Ask for: aggregate name, key properties, business rules, related events.
+Do NOT generate code until invariants are clear.
+
+### Namespace mismatch
+Always ask user for the module namespace before generating code.
+Default pattern: `{CompanyNamespace}.{ModuleName}.{Layer}`
+
+### Over-engineering simple features
+If the feature is simple CRUD with no business rules, suggest a simpler approach
+without full DDD ceremony. Not everything needs an Aggregate.
 
 ---
 
