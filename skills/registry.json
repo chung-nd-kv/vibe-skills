@@ -37,6 +37,48 @@
       "files": ["SKILL.md", "references/cdc.md", "references/dotnet-integration.md", "references/performance.md", "references/system-queries.md", "references/tsql-advanced.md"]
     },
     {
+      "name": "angular-application-layer",
+      "stack": "frontend",
+      "description": "Creates application layer artifacts for Angular hexagonal architecture including DTOs, mapper classes, command use cases for write operations, and query use cases for read operations following CQRS pa",
+      "path": "frontend/angular-application-layer/SKILL.md",
+      "files": ["SKILL.md", "references/dto-template.md", "references/mapper-template.md", "references/usecase-command-template.md", "references/usecase-query-template.md"]
+    },
+    {
+      "name": "angular-domain-modeling",
+      "stack": "frontend",
+      "description": "Creates domain layer artifacts for Angular hexagonal architecture including entities with branded IDs, value objects, repository port interfaces with InjectionToken, and Result type error handling pat",
+      "path": "frontend/angular-domain-modeling/SKILL.md",
+      "files": ["SKILL.md", "references/entity-template.md", "references/repository-port-template.md", "references/value-object-template.md"]
+    },
+    {
+      "name": "angular-hexagonal-init",
+      "stack": "frontend",
+      "description": "Scaffolds Nx Angular libraries with hexagonal architecture folder structure. Use when initializing new feature modules, creating Nx libraries, or setting up domain, application, infrastructure, and pr",
+      "path": "frontend/angular-hexagonal-init/SKILL.md",
+      "files": ["SKILL.md", "references/module-scaffold.md"]
+    },
+    {
+      "name": "angular-infrastructure-layer",
+      "stack": "frontend",
+      "description": "Creates infrastructure layer artifacts for Angular hexagonal architecture including HTTP API clients, repository implementations that implement domain ports, and provider arrays that bind InjectionTok",
+      "path": "frontend/angular-infrastructure-layer/SKILL.md",
+      "files": ["SKILL.md", "references/api-client-template.md", "references/providers-template.md", "references/repository-impl-template.md"]
+    },
+    {
+      "name": "angular-state-management",
+      "stack": "frontend",
+      "description": "Creates Angular Signals-based state services for the presentation layer. Use when creating reactive UI state management, orchestrating use cases with signals, or bridging application layer use cases w",
+      "path": "frontend/angular-state-management/SKILL.md",
+      "files": ["SKILL.md", "references/state-service-template.md"]
+    },
+    {
+      "name": "angular-ui-components",
+      "stack": "frontend",
+      "description": "Creates Angular presentation layer UI components following hexagonal architecture patterns including page components, reactive form components for create and edit, and data grid components with signal",
+      "path": "frontend/angular-ui-components/SKILL.md",
+      "files": ["SKILL.md", "references/form-template.md", "references/grid-template.md", "references/page-template.md"]
+    },
+    {
       "name": "playwright-bdd-analyzer",
       "stack": "testing",
       "description": "BDD test quality analyzer - detects flaky patterns, coverage gaps, and maintainability issues in Playwright-BDD/Cucumber tests",
