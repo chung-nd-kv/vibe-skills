@@ -37,6 +37,13 @@
       "files": ["SKILL.md", "references/cdc.md", "references/dotnet-integration.md", "references/performance.md", "references/system-queries.md", "references/tsql-advanced.md"]
     },
     {
+      "name": "cucumber-api-tests-generator",
+      "stack": "testing",
+      "description": "Generate API test step definitions and client classes from Cucumber/BDD feature files. Use when user provides a .feature file with API scenarios and wants to implement HTTP request steps, create API c",
+      "path": "testing/cucumber-api-tests-generator/SKILL.md",
+      "files": ["SKILL.md", "references/api-client-template.md", "references/api-step-template.md", "references/assertion-patterns.md"]
+    },
+    {
       "name": "playwright-bdd-analyzer",
       "stack": "testing",
       "description": "BDD test quality analyzer - detects flaky patterns, coverage gaps, and maintainability issues in Playwright-BDD/Cucumber tests",
