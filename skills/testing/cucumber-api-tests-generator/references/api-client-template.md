@@ -5,7 +5,7 @@
 Shared base class mọi domain client đều extend. Handles auth headers, base URL, error wrapping.
 
 ```typescript
-// src/api_clients/base_api_client.ts
+// src/support/api_clients/base_api_client.ts
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import config from '@config/index';
 
@@ -116,7 +116,7 @@ export class BaseApiClient {
 ## Domain API Client Example: ProductApiClient
 
 ```typescript
-// src/api_clients/product_api_client.ts
+// src/support/api_clients/product_api_client.ts
 import { BaseApiClient, ApiResponse } from './base_api_client';
 import {
   CreateProductRequest,
@@ -159,7 +159,7 @@ export class ProductApiClient extends BaseApiClient {
 ## Auth API Client
 
 ```typescript
-// src/api_clients/auth_api_client.ts
+// src/support/api_clients/auth_api_client.ts
 import { BaseApiClient, ApiResponse } from './base_api_client';
 
 interface LoginRequest {

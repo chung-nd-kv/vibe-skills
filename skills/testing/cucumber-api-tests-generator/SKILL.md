@@ -65,7 +65,7 @@ Scan project for existing API step files:
 grep -r "Given\|When\|Then" src/step_definitions/api/*.ts 2>/dev/null || echo "No API steps found"
 
 # Check existing API clients
-ls src/api_clients/ 2>/dev/null || echo "No API clients found"
+ls src/support/api_clients/ 2>/dev/null || echo "No API clients found"
 ```
 
 Report to user:
@@ -78,7 +78,7 @@ Create a typed HTTP client class per API domain.
 
 See → [references/api-client-template.md](references/api-client-template.md)
 
-**File location:** `src/api_clients/{domain}_api_client.ts`
+**File location:** `src/support/api_clients/{domain}_api_client.ts`
 
 **Naming conventions:**
 - Class: `PascalCase` + `ApiClient` suffix (e.g., `ProductApiClient`, `OrderApiClient`)
