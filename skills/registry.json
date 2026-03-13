@@ -37,6 +37,13 @@
       "files": ["SKILL.md", "references/cdc.md", "references/dotnet-integration.md", "references/performance.md", "references/system-queries.md", "references/tsql-advanced.md"]
     },
     {
+      "name": "prd-to-gherkin",
+      "stack": "product",
+      "description": "Convert PRD / feature spec documents into Gherkin .feature files. Use when the user has a PRD, feature spec, user story, or requirements document (in any format — Anthropic feature-spec, Confluence,",
+      "path": "product/prd-to-gherkin/SKILL.md",
+      "files": ["SKILL.md", "references/domain-glossary.md", "references/mapping-guide.md"]
+    },
+    {
       "name": "cucumber-api-tests-generator",
       "stack": "testing",
       "description": "Generate API test step definitions and client classes from Cucumber/BDD feature files. Use when user provides a .feature file with API scenarios and wants to implement HTTP request steps, create API c",
