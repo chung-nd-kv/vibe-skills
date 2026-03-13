@@ -1,0 +1,19 @@
+{
+  "name": "vibe-tools",
+  "owner": {
+    "name": "vibe-tools",
+    "email": "cuongtl92@gmail.com"
+  },
+  "metadata": {
+    "description": "Internal engineering tools for vibe"
+  },
+  "plugins": [
+    {
+      "name": "ai-first-engineering",
+      "source": "./plugins/ai-first-engineering",
+      "description": "AI-first engineering workflow with BDD living documentation",
+      "version": "1.0.0",
+      "author": { "name": "AI-First Engineering Team" }
+    }
+  ]
+}
