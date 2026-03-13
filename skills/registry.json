@@ -44,6 +44,13 @@
       "files": ["SKILL.md", "references/domain-glossary.md", "references/mapping-guide.md"]
     },
     {
+      "name": "spec-writer",
+      "stack": "product",
+      "description": "Write product feature specs and PRDs through structured interview then generate a complete document. Use when user wants to write a PRD, feature spec, product requirements document, or says \"write a ",
+      "path": "product/spec-writer/SKILL.md",
+      "files": ["SKILL.md", "references/interview-guide.md", "references/requirements-patterns.md"]
+    },
+    {
       "name": "cucumber-api-tests-generator",
       "stack": "testing",
       "description": "Generate API test step definitions and client classes from Cucumber/BDD feature files. Use when user provides a .feature file with API scenarios and wants to implement HTTP request steps, create API c",
