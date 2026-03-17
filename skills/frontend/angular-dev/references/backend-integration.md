@@ -225,7 +225,7 @@ export const environment = {
 // environments/environment.prod.ts
 export const environment = {
   production: true,
-  apiUrl: 'https://api.kiotviet.com/api',
+  apiUrl: 'https://api.example.com/api',
 };
 ```
 

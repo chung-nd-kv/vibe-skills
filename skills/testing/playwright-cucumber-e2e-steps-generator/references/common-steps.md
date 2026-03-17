@@ -15,7 +15,7 @@ let loginPage: LoginPage;
 
 Given('I am logged in as {string} user', async function (this: CustomWorld, userType: string) {
     const accounts = getAccountCredentials();
-    const account = accounts['KiotVietTest'];
+    const account = accounts['AccountTest'];
     const { username, password } = account.users[userType];
     
     loginPage = new LoginPage(this.page);

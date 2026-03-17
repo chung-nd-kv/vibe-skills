@@ -109,7 +109,7 @@ Given('I am on the login page', async function (this: CustomWorld) {
 
 Given('I am logged in as {string}', async function (this: CustomWorld, userType: string) {
     const accounts = getAccountCredentials();
-    const { username, password } = accounts['KiotVietTest'].users[userType];
+    const { username, password } = accounts['AccountTest'].users[userType];
     
     loginPage = new LoginPage(this.page);
     await loginPage.navigate();
@@ -134,7 +134,7 @@ When('I click the login button', async function (this: CustomWorld) {
 
 When('I login with valid credentials', async function (this: CustomWorld) {
     const accounts = getAccountCredentials();
-    const { username, password } = accounts['KiotVietTest'].users.admin;
+    const { username, password } = accounts['AccountTest'].users.admin;
     await loginPage.login(username, password);
 });
 

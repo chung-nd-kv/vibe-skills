@@ -85,7 +85,7 @@ const IMPERATIVE_KEYWORDS = [
   'hover',
   'drag',
   'drop',
-  // Vietnamese (for KiotViet context)
+  // Vietnamese (for software context)
   'nhấn',
   'bấm',
   'nhập',

@@ -133,7 +133,7 @@ src/
 ```typescript
 import { getAccountCredentials } from '@support/fixture/account';
 const accounts = getAccountCredentials();
-const { username, password } = accounts['KiotVietTest'].users.admin;
+const { username, password } = accounts['AccountTest'].users.admin;
 ```
 
 ### Page Navigation

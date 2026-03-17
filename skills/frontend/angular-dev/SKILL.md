@@ -11,7 +11,7 @@ Angular 17+ development guide — Standalone Components, Signals, NgRx, and .NET
 - Angular **17+** — Standalone Components (no NgModules by default)
 - State: **Signals** for local/simple state, **NgRx Signal Store** for feature state
 - HTTP: `HttpClient` with typed responses, interceptors for auth
-- Backend: **.NET Web API** (RESTful, likely following KiotViet CQRS pattern)
+- Backend: **.NET Web API** (RESTful, likely following BE CQRS pattern)
 - Styling: SCSS, standalone imports
 - Testing: Jest (or Jasmine) + Angular Testing Library
 
@@ -118,7 +118,7 @@ export const PRODUCT_ROUTES: Routes = [
 ```typescript
 // environment.ts
 export const environment = {
-  apiUrl: 'https://api.kiotviet.com/v1'
+  apiUrl: 'https://api.example.com/v1'
 };
 ```
 
