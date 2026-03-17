@@ -27,7 +27,14 @@
       "stack": "common",
       "description": "Systematic code review for quality, correctness, and maintainability. Use when reviewing pull requests, code changes, diffs, or when asked to review/critique code. Also use when user says review this,",
       "path": "common/code-reviewer/SKILL.md",
-      "files": ["SKILL.md", "references/checklists.md", "references/dotnet-patterns.md", "references/flutter-dart-patterns.md"]
+      "files": ["SKILL.md", "references/angular-patterns.md", "references/checklists.md", "references/dotnet-patterns.md", "references/flutter-dart-patterns.md"]
+    },
+    {
+      "name": "conventional-commit",
+      "stack": "common",
+      "description": "Conventional Commits 1.0.0 format for consistent, parseable git commit messages. Use when committing changes, writing commit messages, or when the user mentions commit, save, git commit, or wants to p",
+      "path": "common/conventional-commit/SKILL.md",
+      "files": ["SKILL.md", "references/commit-examples.md"]
     },
     {
       "name": "sqlserver-expert",
@@ -37,25 +44,53 @@
       "files": ["SKILL.md", "references/cdc.md", "references/dotnet-integration.md", "references/performance.md", "references/system-queries.md", "references/tsql-advanced.md"]
     },
     {
-      "name": "prd-to-gherkin",
-      "stack": "product",
-      "description": "Convert PRD / feature spec documents into Gherkin .feature files. Use when the user has a PRD, feature spec, user story, or requirements document (in any format — Anthropic feature-spec, Confluence,",
-      "path": "product/prd-to-gherkin/SKILL.md",
-      "files": ["SKILL.md", "references/domain-glossary.md", "references/mapping-guide.md"]
+      "name": "angular-component",
+      "stack": "frontend",
+      "description": "Angular 17+ component patterns with signal-based I/O, OnPush change detection, native control flow (@if/@for/@switch), and inject() function. Use when creating, modifying, or reviewing Angular compone",
+      "path": "frontend/angular-component/SKILL.md",
+      "files": ["SKILL.md", "references/component-patterns.md"]
     },
     {
-      "name": "spec-writer",
-      "stack": "product",
-      "description": "Write product feature specs and PRDs through structured interview then generate a complete document. Use when user wants to write a PRD, feature spec, product requirements document, or says \"write a ",
-      "path": "product/spec-writer/SKILL.md",
-      "files": ["SKILL.md", "references/interview-guide.md", "references/requirements-patterns.md"]
+      "name": "angular-forms",
+      "stack": "frontend",
+      "description": "Angular reactive forms with typed FormGroup/FormControl, signal-based validation, dialog form integration, and exhaustMap submission. Use when creating forms, dialog forms, validation, or form submiss",
+      "path": "frontend/angular-forms/SKILL.md",
+      "files": ["SKILL.md", "references/form-patterns.md"]
     },
     {
-      "name": "cucumber-api-tests-generator",
-      "stack": "testing",
-      "description": "Generate API test step definitions and client classes from Cucumber/BDD feature files. Use when user provides a .feature file with API scenarios and wants to implement HTTP request steps, create API c",
-      "path": "testing/cucumber-api-tests-generator/SKILL.md",
-      "files": ["SKILL.md", "references/api-client-template.md", "references/api-step-template.md", "references/assertion-patterns.md"]
+      "name": "angular-hexagonal",
+      "stack": "frontend",
+      "description": "Hexagonal/clean architecture for Angular with domain layer (branded IDs, readonly interfaces, pure functions), application layer (QueryBase, UseCaseBase, DTOs, Mappers), infrastructure layer (API clie",
+      "path": "frontend/angular-hexagonal/SKILL.md",
+      "files": ["SKILL.md", "references/code-generation.md", "references/layer-patterns.md"]
+    },
+    {
+      "name": "angular-http",
+      "stack": "frontend",
+      "description": "Angular HTTP client patterns with HttpClient, two-layer architecture (API Client returns Observable, Repository wraps with Result), error handling, and DTO conventions. Use when creating API clients, ",
+      "path": "frontend/angular-http/SKILL.md",
+      "files": ["SKILL.md", "references/http-patterns.md"]
+    },
+    {
+      "name": "angular-module-setup",
+      "stack": "frontend",
+      "description": "Angular module setup with inject() function, InjectionToken for repository ports, route-level providers for DI scoping, lazy loading with loadComponent/loadChildren, infrastructure providers array, an",
+      "path": "frontend/angular-module-setup/SKILL.md",
+      "files": ["SKILL.md", "references/di-patterns.md"]
+    },
+    {
+      "name": "angular-reactivity",
+      "stack": "frontend",
+      "description": "Angular reactive patterns combining signals (signal(), computed(), effect(), linkedSignal()) for UI state with RxJS (Subject, switchMap, exhaustMap, race, combineLatest) for async event streams, plus ",
+      "path": "frontend/angular-reactivity/SKILL.md",
+      "files": ["SKILL.md", "references/rxjs-patterns.md", "references/signal-patterns.md"]
+    },
+    {
+      "name": "angular-testing",
+      "stack": "frontend",
+      "description": "Angular testing patterns with Jest and TestBed. Covers unit tests for use cases, queries, services, and components using AAA pattern, mock repositories via InjectionToken, and signal-based component t",
+      "path": "frontend/angular-testing/SKILL.md",
+      "files": ["SKILL.md", "references/component-testing.md", "references/state-service-testing.md", "references/usecase-testing.md"]
     },
     {
       "name": "playwright-bdd-analyzer",

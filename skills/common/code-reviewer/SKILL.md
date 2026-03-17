@@ -75,4 +75,5 @@ Review in this order to catch critical issues first:
 
 - **Review checklists**: See [references/checklists.md](references/checklists.md)
 - **.NET/Clean Architecture patterns**: See [references/dotnet-patterns.md](references/dotnet-patterns.md)
+- **Angular patterns**: See [references/angular-patterns.md](references/angular-patterns.md)
 - **Flutter / Dart**: See [references/flutter-dart-patterns.md](references/flutter-dart-patterns.md)
