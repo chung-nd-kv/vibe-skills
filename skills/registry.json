@@ -86,6 +86,13 @@
       "files": ["SKILL.md", "references/rxjs-patterns.md", "references/signal-patterns.md"]
     },
     {
+      "name": "angular-tdd",
+      "stack": "frontend",
+      "description": "Angular TDD workflow with codebase exploration and Figma design integration. Guides the Explore-Plan-Test-Implement-Refactor-Review cycle for Angular applications. Use when implementing Angular featur",
+      "path": "frontend/angular-tdd/SKILL.md",
+      "files": ["SKILL.md", "references/exploration-checklist.md", "references/figma-workflow.md", "references/tdd-patterns.md"]
+    },
+    {
       "name": "angular-testing",
       "stack": "frontend",
       "description": "Angular testing patterns with Jest and TestBed. Covers unit tests for use cases, queries, services, and components using AAA pattern, mock repositories via InjectionToken, and signal-based component t",
