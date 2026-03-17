@@ -51,6 +51,13 @@
       "files": ["SKILL.md", "references/component-patterns.md"]
     },
     {
+      "name": "angular-dev",
+      "stack": "frontend",
+      "description": "Angular 17+ development guide covering Standalone Components, Signals-based state, NgRx, RxJS patterns, and integration with .NET/C# backends. Use when user asks to \"create Angular component\", \"imp",
+      "path": "frontend/angular-dev/SKILL.md",
+      "files": ["SKILL.md", "references/backend-integration.md", "references/component-patterns.md", "references/state-management.md"]
+    },
+    {
       "name": "angular-forms",
       "stack": "frontend",
       "description": "Angular reactive forms with typed FormGroup/FormControl, signal-based validation, dialog form integration, and exhaustMap submission. Use when creating forms, dialog forms, validation, or form submiss",
