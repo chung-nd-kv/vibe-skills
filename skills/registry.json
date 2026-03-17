@@ -93,6 +93,27 @@
       "files": ["SKILL.md", "references/component-testing.md", "references/state-service-testing.md", "references/usecase-testing.md"]
     },
     {
+      "name": "prd-to-gherkin",
+      "stack": "product",
+      "description": "Convert PRD / feature spec documents into Gherkin .feature files. Use when the user has a PRD, feature spec, user story, or requirements document (in any format — Anthropic feature-spec, Confluence,",
+      "path": "product/prd-to-gherkin/SKILL.md",
+      "files": ["SKILL.md", "references/domain-glossary.md", "references/mapping-guide.md"]
+    },
+    {
+      "name": "spec-writer",
+      "stack": "product",
+      "description": "Write product feature specs and PRDs through structured interview then generate a complete document. Use when user wants to write a PRD, feature spec, product requirements document, or says \"write a ",
+      "path": "product/spec-writer/SKILL.md",
+      "files": ["SKILL.md", "references/interview-guide.md", "references/requirements-patterns.md"]
+    },
+    {
+      "name": "cucumber-api-tests-generator",
+      "stack": "testing",
+      "description": "Generate API test step definitions and client classes from Cucumber/BDD feature files. Use when user provides a .feature file with API scenarios and wants to implement HTTP request steps, create API c",
+      "path": "testing/cucumber-api-tests-generator/SKILL.md",
+      "files": ["SKILL.md", "references/api-client-template.md", "references/api-step-template.md", "references/assertion-patterns.md"]
+    },
+    {
       "name": "playwright-bdd-analyzer",
       "stack": "testing",
       "description": "BDD test quality analyzer - detects flaky patterns, coverage gaps, and maintainability issues in Playwright-BDD/Cucumber tests",
