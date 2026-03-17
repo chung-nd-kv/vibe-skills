@@ -1,29 +1,17 @@
 ---
 name: dotnet-tdd
-description: ".NET Core TDD workflow skill using xUnit and Moq. Use this skill whenever writing new code, implementing features, fixing bugs, or refactoring in .NET Core C# projects. Trigger on any mention of TDD, test-driven development, unit testing, writing tests first, Red-Green-Refactor, or when the user asks to implement a feature, use case, query handler, domain entity, or any code that should be test-driven. Also trigger when the user says implement, build, create a new handler or service or entity, or add a feature, as these all imply the TDD workflow should be followed. Even for bug fixes, use this workflow to write a failing test reproducing the bug first, then fix it."
+description: .NET Core TDD workflow using xUnit, Moq, and FluentAssertions. Guides the Plan-Test-Implement-Review cycle for C# code. Use when user says "write tests first", "TDD", "Red-Green-Refactor", "unit test this handler", or asks to implement a feature test-driven. Do NOT use for integration tests, E2E tests, BDD/Gherkin scenarios (use bdd-practices skill), or simple code snippets that don't need test coverage.
+metadata:
+  author: CuongTL
+  version: 1.0.0
+  tags: [dotnet, tdd, xunit, moq, unit-testing, clean-architecture]
 ---
 
 # .NET Core TDD Workflow
 
-Test-Driven Development workflow for C# / .NET Core using xUnit + Moq.
+Test-Driven Development workflow for C# / .NET Core using xUnit + Moq + FluentAssertions.
 
-Every piece of code follows the **Plan → Test → Implement → Review** cycle.
-
----
-
-## The Workflow
-
-```
-┌─────────┐     ┌──────────┐     ┌─────────────┐     ┌──────────┐
-│  PLAN   │────▶│   TEST   │────▶│ IMPLEMENT   │────▶│  REVIEW  │
-│         │     │  (RED)   │     │  (GREEN +   │     │          │
-│ Analyze │     │  Write   │     │  REFACTOR)  │     │ Code     │
-│ Design  │     │  failing │     │  Minimal    │     │ Review   │
-│ Cases   │     │  tests   │     │  then clean │     │ skill    │
-└─────────┘     └──────────┘     └─────────────┘     └──────────┘
-      ▲                                                    │
-      └────────────── next feature/fix ◄───────────────────┘
-```
+Every piece of code follows the **Plan → Test (RED) → Implement (GREEN + REFACTOR) → Review** cycle.
 
 ---
 
@@ -31,10 +19,8 @@ Every piece of code follows the **Plan → Test → Implement → Review** cycle
 
 Analyze the requirement before writing any code or test.
 
-### Steps
-
 1. **Understand the requirement** — what is the expected behavior?
-2. **Identify the component type** — which test strategy applies?
+2. **Identify the component type** — which test strategy applies? (see matrix below)
 3. **List test cases** — happy path, edge cases, error cases
 4. **Define the public API** — method signatures, input/output types
 
@@ -42,10 +28,10 @@ Analyze the requirement before writing any code or test.
 
 | Component | What to test | Mocking strategy |
 |-----------|-------------|------------------|
-| **Aggregate/Entity** | Factory methods, behavior methods, invariants, domain events | No mocks — pure domain logic |
+| **Aggregate/Entity** | Factory methods, behavior, invariants, domain events | No mocks — pure domain logic |
 | **Value Object** | Creation validation, equality, behavior | No mocks — pure logic |
-| **UseCaseHandler** | Business flow, repository calls, UoW commit, error handling | Mock repositories, UoW, domain services |
-| **QueryHandler** | SQL correctness, mapping, null handling | Mock IDbConnection (or use integration test) |
+| **UseCaseHandler** | Business flow, repository calls, UoW commit, errors | Mock repositories, UoW, domain services |
+| **QueryHandler** | SQL correctness, mapping, null handling | Mock IDbConnection (or integration test) |
 | **Domain Service** | Cross-aggregate logic | Mock repositories |
 | **Application Service** | Orchestration, validation | Mock dependencies |
 
@@ -81,7 +67,7 @@ tests/{Module}.{Layer}.Tests/
 │   └── InvoiceTests.cs
 ├── ValueObjects/
 │   └── MoneyTests.cs
-└── _usings.cs          # Global usings for test project
+└── _usings.cs
 ```
 
 ### Naming Convention
@@ -90,166 +76,33 @@ tests/{Module}.{Layer}.Tests/
 {MethodUnderTest}_{Scenario}_{ExpectedResult}
 ```
 
-Examples:
-- `Create_WithValidData_ShouldReturnInvoice`
-- `Create_WithEmptyTaxCode_ShouldThrowDomainException`
-- `HandleAsync_WithValidUseCase_ShouldCallRepositoryAdd`
-- `Submit_WhenAlreadySubmitted_ShouldThrowDomainException`
+Examples: `Create_WithValidData_ShouldReturnInvoice`, `HandleAsync_WithValidUseCase_ShouldCallRepositoryAdd`
 
 ### Test Structure: Arrange-Act-Assert
 
-```csharp
-public class CreateInvoiceUseCaseHandlerTests
-{
-    private readonly Mock<IInvoiceRepository> _invoiceRepositoryMock;
-    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-    private readonly CreateInvoiceUseCaseHandler _handler;
-
-    public CreateInvoiceUseCaseHandlerTests()
-    {
-        _invoiceRepositoryMock = new Mock<IInvoiceRepository>();
-        _unitOfWorkMock = new Mock<IUnitOfWork>();
-        _handler = new CreateInvoiceUseCaseHandler(
-            _invoiceRepositoryMock.Object,
-            _unitOfWorkMock.Object);
-    }
-
-    [Fact]
-    public async Task HandleAsync_WithValidUseCase_ShouldAddInvoiceAndCommit()
-    {
-        // Arrange
-        var request = new CreateInvoiceRequest
-        {
-            BuyerTaxCode = "0101234567",
-            SellerTaxCode = "0107654321",
-            Amount = 1_000_000m
-        };
-        var useCase = new CreateInvoiceUseCase(request);
-
-        // Act
-        await _handler.HandleAsync(useCase);
-
-        // Assert
-        _invoiceRepositoryMock.Verify(
-            r => r.AddAsync(It.Is<Invoice>(i =>
-                i.BuyerTaxCode == "0101234567" &&
-                i.Amount == 1_000_000m)),
-            Times.Once);
-
-        _unitOfWorkMock.Verify(u => u.CommitAsync(default), Times.Once);
-    }
-
-    [Fact]
-    public async Task HandleAsync_WithValidUseCase_ShouldRaiseDomainEvent()
-    {
-        // Arrange
-        var request = new CreateInvoiceRequest
-        {
-            BuyerTaxCode = "0101234567",
-            SellerTaxCode = "0107654321",
-            Amount = 500_000m
-        };
-        var useCase = new CreateInvoiceUseCase(request);
-        Invoice? capturedInvoice = null;
-
-        _invoiceRepositoryMock
-            .Setup(r => r.AddAsync(It.IsAny<Invoice>()))
-            .Callback<Invoice>(i => capturedInvoice = i);
-
-        // Act
-        await _handler.HandleAsync(useCase);
-
-        // Assert
-        capturedInvoice.Should().NotBeNull();
-        capturedInvoice!.DomainEvents.Should().ContainSingle()
-            .Which.Should().BeOfType<InvoiceCreatedEvent>();
-    }
-}
-```
-
-### Testing Domain Entities (No Mocks)
+Every test follows AAA pattern. For full code examples of each component type, consult `references/test-examples.md`.
 
 ```csharp
-public class InvoiceTests
+[Fact]
+public async Task HandleAsync_WithValidUseCase_ShouldAddInvoiceAndCommit()
 {
-    [Fact]
-    public void Create_WithValidData_ShouldReturnInvoiceWithDraftStatus()
+    // Arrange
+    var useCase = new CreateInvoiceUseCase(new CreateInvoiceRequest
     {
-        // Act
-        var invoice = Invoice.Create(
-            buyerTaxCode: "0101234567",
-            sellerTaxCode: "0107654321",
-            amount: 1_000_000m);
+        BuyerTaxCode = "0101234567",
+        SellerTaxCode = "0107654321",
+        Amount = 1_000_000m
+    });
 
-        // Assert
-        invoice.Status.Should().Be(InvoiceStatus.Draft);
-        invoice.BuyerTaxCode.Should().Be("0101234567");
-        invoice.DomainEvents.Should().ContainSingle()
-            .Which.Should().BeOfType<InvoiceCreatedEvent>();
-    }
+    // Act
+    await _handler.HandleAsync(useCase);
 
-    [Theory]
-    [InlineData("")]
-    [InlineData(null)]
-    [InlineData("   ")]
-    public void Create_WithInvalidBuyerTaxCode_ShouldThrowDomainException(string? taxCode)
-    {
-        // Act
-        var act = () => Invoice.Create(
-            buyerTaxCode: taxCode!,
-            sellerTaxCode: "0107654321",
-            amount: 1_000_000m);
-
-        // Assert
-        act.Should().Throw<DomainException>()
-            .WithMessage("*Buyer tax code*");
-    }
-
-    [Fact]
-    public void Submit_WhenDraft_ShouldTransitionToSubmitted()
-    {
-        // Arrange
-        var invoice = Invoice.Create("0101234567", "0107654321", 1_000_000m);
-        invoice.ClearDomainEvents(); // Clear creation event
-
-        // Act
-        invoice.Submit();
-
-        // Assert
-        invoice.Status.Should().Be(InvoiceStatus.Submitted);
-        invoice.DomainEvents.Should().ContainSingle()
-            .Which.Should().BeOfType<InvoiceSubmittedEvent>();
-    }
-}
-```
-
-### Testing Value Objects
-
-```csharp
-public class MoneyTests
-{
-    [Fact]
-    public void Add_SameCurrency_ShouldReturnSum()
-    {
-        var a = Money.VND(100_000m);
-        var b = Money.VND(200_000m);
-
-        var result = a.Add(b);
-
-        result.Amount.Should().Be(300_000m);
-        result.Currency.Should().Be("VND");
-    }
-
-    [Fact]
-    public void Add_DifferentCurrency_ShouldThrow()
-    {
-        var vnd = Money.VND(100_000m);
-        var usd = new Money(100m, "USD");
-
-        var act = () => vnd.Add(usd);
-
-        act.Should().Throw<DomainException>();
-    }
+    // Assert
+    _invoiceRepositoryMock.Verify(
+        r => r.AddAsync(It.Is<Invoice>(i =>
+            i.BuyerTaxCode == "0101234567" && i.Amount == 1_000_000m)),
+        Times.Once);
+    _unitOfWorkMock.Verify(u => u.CommitAsync(default), Times.Once);
 }
 ```
 
@@ -261,32 +114,16 @@ public class MoneyTests
 4. **Use FluentAssertions** (`.Should()`) for readable assertions
 5. **Use `Theory` + `InlineData`** for parameterized edge cases
 
+For Moq patterns, consult `references/moq-cheatsheet.md`.
+For FluentAssertions patterns, consult `references/fluentassertions-cheatsheet.md`.
+
 ---
 
 ## Phase 3: IMPLEMENT (GREEN + REFACTOR)
 
 ### GREEN: Minimal Code to Pass
 
-Write the **absolute minimum** code to make the failing test pass. No premature optimization,
-no extra features, no "while I'm here" changes.
-
-```csharp
-// Test says: Create should return invoice with Draft status
-// GREEN — just enough to pass:
-public static Invoice Create(string buyerTaxCode, string sellerTaxCode, decimal amount)
-{
-    var invoice = new Invoice
-    {
-        Id = Guid.NewGuid(),
-        BuyerTaxCode = buyerTaxCode,
-        SellerTaxCode = sellerTaxCode,
-        Amount = amount,
-        Status = InvoiceStatus.Draft
-    };
-    invoice.AddDomainEvent(new InvoiceCreatedEvent(invoice.Id));
-    return invoice;
-}
-```
+Write the **absolute minimum** code to make the failing test pass. No premature optimization, no extra features, no "while I'm here" changes.
 
 ### REFACTOR: Clean Without Changing Behavior
 
@@ -304,115 +141,21 @@ After GREEN, refactor with confidence — tests are your safety net.
 ### The Inner Loop
 
 ```
-Write ONE test (RED)
-    → Write minimal code (GREEN)
-    → Refactor
-    → Run tests (all green?)
-    → Write NEXT test (RED)
-    → Repeat
+Write ONE test (RED) → Write minimal code (GREEN) → Refactor → Run tests → Next test
 ```
 
 ---
 
 ## Phase 4: REVIEW
 
-After implementing the feature, delegate to the **code-reviewer** skill for a systematic review.
+After implementing the feature, perform a systematic review:
 
-The review should cover:
-- Does the code follow DDD patterns? (use `dotnet-ddd` skill as reference)
 - Are all test cases from the PLAN phase covered?
-- Is the test naming consistent?
+- Is the test naming consistent (`{Method}_{Scenario}_{Expected}`)?
 - Are there missing edge cases?
-- Is the Arrange-Act-Assert pattern followed?
-- Are mocks properly verified?
-
----
-
-## Testing Cheat Sheet
-
-### Common Moq Patterns
-
-```csharp
-// Setup return value
-mock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>()))
-    .ReturnsAsync(someEntity);
-
-// Setup to return null
-mock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>()))
-    .ReturnsAsync((Invoice?)null);
-
-// Capture argument
-Invoice? captured = null;
-mock.Setup(r => r.AddAsync(It.IsAny<Invoice>()))
-    .Callback<Invoice>(i => captured = i);
-
-// Verify called once
-mock.Verify(r => r.AddAsync(It.IsAny<Invoice>()), Times.Once);
-
-// Verify never called
-mock.Verify(r => r.UpdateAsync(It.IsAny<Invoice>()), Times.Never);
-
-// Verify with argument matching
-mock.Verify(r => r.AddAsync(It.Is<Invoice>(i =>
-    i.BuyerTaxCode == "expected" && i.Status == InvoiceStatus.Draft)),
-    Times.Once);
-
-// Setup throws
-mock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>()))
-    .ThrowsAsync(new Exception("DB error"));
-```
-
-### Common FluentAssertions Patterns
-
-```csharp
-// Basic
-result.Should().NotBeNull();
-result.Should().Be(expected);
-result.Should().BeEquivalentTo(expected);
-
-// Collections
-list.Should().HaveCount(3);
-list.Should().ContainSingle().Which.Should().BeOfType<MyType>();
-list.Should().BeEmpty();
-list.Should().Contain(x => x.Id == expectedId);
-
-// Exceptions
-act.Should().Throw<DomainException>().WithMessage("*required*");
-act.Should().ThrowAsync<ValidationException>();
-act.Should().NotThrow();
-
-// Type checking
-result.Should().BeOfType<InvoiceDto>();
-result.Should().BeAssignableTo<IEntity>();
-```
-
-### Test Data Builders (for complex test data)
-
-```csharp
-public class InvoiceBuilder
-{
-    private string _buyerTaxCode = "0101234567";
-    private string _sellerTaxCode = "0107654321";
-    private decimal _amount = 1_000_000m;
-
-    public InvoiceBuilder WithBuyerTaxCode(string taxCode)
-    {
-        _buyerTaxCode = taxCode;
-        return this;
-    }
-
-    public InvoiceBuilder WithAmount(decimal amount)
-    {
-        _amount = amount;
-        return this;
-    }
-
-    public Invoice Build() => Invoice.Create(_buyerTaxCode, _sellerTaxCode, _amount);
-}
-
-// Usage in tests:
-var invoice = new InvoiceBuilder().WithAmount(500_000m).Build();
-```
+- Is Arrange-Act-Assert followed in every test?
+- Are mocks properly verified (no over-mocking)?
+- Does the code follow DDD patterns for the component type?
 
 ---
 
@@ -421,21 +164,41 @@ var invoice = new InvoiceBuilder().WithAmount(500_000m).Build();
 Bug fixes also follow TDD:
 
 1. **PLAN**: Understand the bug and its root cause
-2. **TEST (RED)**: Write a test that reproduces the bug — it must FAIL
+2. **TEST (RED)**: Write a test that reproduces the bug — it MUST fail
 3. **IMPLEMENT (GREEN)**: Fix the bug — the test passes
 4. **REFACTOR**: Clean up if needed
 5. **REVIEW**: Verify fix doesn't break other tests
 
-```csharp
-[Fact]
-public void Submit_WhenAmountIsZero_ShouldThrowDomainException()
-{
-    // This test reproduces the bug: zero-amount invoices were being submitted
-    var invoice = Invoice.Create("0101234567", "0107654321", amount: 0m);
+---
 
-    var act = () => invoice.Submit();
+## Common Issues
 
-    act.Should().Throw<DomainException>()
-        .WithMessage("*amount must be greater than zero*");
-}
+### Test project setup
+If the test project doesn't exist yet, create it:
+```bash
+dotnet new xunit -n {Module}.{Layer}.Tests
+dotnet add package Moq
+dotnet add package FluentAssertions
 ```
+
+### Global usings for test projects
+Create `_usings.cs` in the test project root:
+```csharp
+global using Xunit;
+global using Moq;
+global using FluentAssertions;
+```
+
+### Tests won't compile
+This is expected in RED phase. The test references classes/methods that don't exist yet. Proceed to GREEN phase to create the minimal implementation.
+
+---
+
+## References
+
+For detailed examples and cheat sheets, consult these files as needed:
+
+- `references/test-examples.md` — Full test examples for each component type (Entity, UseCase, Value Object, Domain Event)
+- `references/moq-cheatsheet.md` — Common Moq patterns (setup, verify, capture, throws)
+- `references/fluentassertions-cheatsheet.md` — FluentAssertions patterns (basic, collections, exceptions, types)
+- `references/test-data-builders.md` — Test Data Builder pattern for complex test data

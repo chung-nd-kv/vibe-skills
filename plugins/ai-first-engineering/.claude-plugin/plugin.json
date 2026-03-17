@@ -1,0 +1,17 @@
+{
+  "name": "ai-first-engineering",
+  "version": "1.0.0",
+  "description": "AI-first engineering workflow with BDD living documentation. Lean PRD writing, Gherkin generation, and wireframe mockups for Product and Engineer roles.",
+  "author": {
+    "name": "AI-First Engineering Team"
+  },
+  "keywords": [
+    "ai-first",
+    "bdd",
+    "gherkin",
+    "prd",
+    "living-docs",
+    "wireframe",
+    "product-engineering"
+  ]
+}
